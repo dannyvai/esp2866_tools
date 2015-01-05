@@ -1,0 +1,28 @@
+file.remove("relay_server.lua")
+file.open("relay_server.lua","w")
+file.writeline([[status=0]])
+file.writeline([[pin=3]])
+file.writeline([[gpio.mode(pin,gpio.OUTPUT)]])
+file.writeline([[srv=net.createServer(net.TCP) srv:listen(80,function(conn)]])
+file.writeline([[conn:on("receive",function(conn,payload)]])
+file.writeline([[print(payload)]])
+
+file.writeline([[if string.find(payload,"favicon.ico") == nil then]])
+file.writeline([[if status==0 then gpio.write(pin,gpio.HIGH); status=1 else gpio.write(pin,gpio.LOW); status=0 end]])
+file.writeline([[end]])
+file.writeline([[conn:send("<h1> The relay status is " .. status ..".</h1>")]])
+
+file.writeline([[end)]])
+
+file.writeline([[conn:on("sent",function(conn) conn:close() end)]])
+
+file.writeline([[end)]])
+
+file.close()
+
+dofile("relay_server.lua")
+file.remove("init.lua")
+file.open("init.lua","w")
+file.writeline([[dofile("relay_server.lua")]])
+file.close()
+node.restart()
