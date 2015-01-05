@@ -1,0 +1,32 @@
+file.remove("relay_server.lua")
+file.open("relay_server.lua","w")
+file.writeline([[status=0]])
+file.writeline([[pin=3]])
+file.writeline([[gpio.mode(pin,gpio.OUTPUT)]])
+file.writeline([[srv=net.createServer(net.TCP) srv:listen(80,function(conn)]])
+file.writeline([[conn:on("receive",function(conn,payload)]])
+file.writeline([[print(payload)]])
+
+file.writeline([[if string.find(payload,"secret=9999") ~= nil then]])
+file.writeline([[if string.find(payload,"light_on") ~= nil then gpio.write(pin,gpio.HIGH) end]])
+file.writeline([[if string.find(payload,"light_off") ~= nil then gpio.write(pin,gpio.LOW) end]])
+file.writeline([[end]])
+
+file.writeline([[if string.find(payload,"favicon.ico") == nil then]])
+file.writeline([[conn:send('<form method="POST" name="smart_house_form" ><p><input name="secret" value="" /></p><p><input type="submit" name="light_on" value="light_on" /></p><p><input type="submit" name="light_off" value="light_off" /></p></form>')]])
+file.writeline([[end]])
+
+file.writeline([[end)]])
+
+file.writeline([[conn:on("sent",function(conn) conn:close() end)]])
+
+file.writeline([[end)]])
+
+file.close()
+
+dofile("relay_server.lua")
+file.remove("init.lua")
+file.open("init.lua","w")
+file.writeline([[dofile("relay_server.lua")]])
+file.close()
+node.restart()
