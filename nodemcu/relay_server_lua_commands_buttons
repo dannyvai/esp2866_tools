@@ -8,12 +8,12 @@ file.writeline([[conn:on("receive",function(conn,payload)]])
 file.writeline([[print(payload)]])
 
 file.writeline([[if string.find(payload,"secret=9999") ~= nil then]])
-file.writeline([[if string.find(payload,"light_on") ~= nil then gpio.write(pin,gpio.HIGH) end]])
-file.writeline([[if string.find(payload,"light_off") ~= nil then gpio.write(pin,gpio.LOW) end]])
+file.writeline([[if string.find(payload,"light_on") ~= nil then gpio.write(pin,gpio.LOW) end]])
+file.writeline([[if string.find(payload,"light_off") ~= nil then gpio.write(pin,gpio.HIGH) end]])
 file.writeline([[end]])
 
 file.writeline([[if string.find(payload,"favicon.ico") == nil then]])
-file.writeline([[conn:send('<form method="POST" name="smart_house_form" ><p><input name="secret" value="" /></p><p><input type="submit" name="light_on" value="light_on" /></p><p><input type="submit" name="light_off" value="light_off" /></p></form>')]])
+file.writeline([[conn:send('<html><form method="POST" name="smart_house_form" ><p><input name="secret" value="" /></p><p><input type="submit" name="lo" value="light_on" /></p><p><input type="submit" name="lf" value="light_off" /></p></form></body>')]])
 file.writeline([[end]])
 
 file.writeline([[end)]])
