@@ -1,0 +1,5 @@
+cfg={}
+cfg.ssid="myhotspot"
+cfg.pwd="myhotspot"
+wifi.ap.config(cfg)
+print(wifi.ap.getip())

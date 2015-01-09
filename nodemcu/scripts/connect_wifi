@@ -1,0 +1,3 @@
+wifi.setmode(wifi.STATION)
+wifi.sta.config("SSID","password")
+print(wifi.sta.getip())
