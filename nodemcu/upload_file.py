@@ -21,12 +21,14 @@ for line in lines:
     ser.write(chr(10))
     ser.write(line + chr(10))
     res = ser.read(1024)
-    while res == 0:
+    while len(res) == 0:
         res = ser.read(1024)
     print "got from esp : %s " % res
 
-res = 0
-while res == 0:
+ser.timeout = 1
+res = ""
+while len(res) == 0:
         res = ser.read(1024)
+print "got from esp : %s " % res
 
 upload_file.close()
