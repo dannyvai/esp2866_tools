@@ -1,0 +1,33 @@
+
+file.remove("light_switch.lua")
+file.open("light_switch.lua","w")
+file.writeline([[pin=3]])
+file.writeline([[gpio.mode(pin,gpio.INPUT)]])
+
+file.writeline([[pin_mode = gpio.read(pin)]])
+
+file.writeline([[if pin_mode == 0 and light_status == 0 then ]])
+file.writeline([[print("Light on")]])
+file.writeline([[light_status = 1]])
+file.writeline([[sk=net.createConnection(net.TCP, 0)]])
+file.writeline([[sk:connect(80,"10.0.0.1")]])
+file.writeline([[ sk:send("GET / HTTP/1.1\r\nHost: 192.168.0.66\r\nConnection: keep-alive\r\nAccept: */*\r\n\r\nsecret=99999&light_on")]])
+file.writeline([[end]])
+
+file.writeline([[if pin_mode == 1 and light_status == 1 then ]])
+file.writeline([[light_status = 0]])
+file.writeline([[print("Light off")]])
+file.writeline([[sk=net.createConnection(net.TCP, 0)]])
+file.writeline([[sk:connect(80,"10.0.0.1")]])
+file.writeline([[ sk:send("GET / HTTP/1.1\r\nHost: 192.168.0.66\r\nConnection: keep-alive\r\nAccept: */*\r\n\r\nsecret=99999&light_off")]])
+file.writeline([[end]])
+
+file.close()
+
+file.remove("init.lua")
+file.open("init.lua","w")
+file.writeline([[light_status=0]])
+file.writeline([[tmr.alarm(0, 1000, 1, function() dofile("light_switch.lua") end )]])
+
+file.close()
+node.restart()

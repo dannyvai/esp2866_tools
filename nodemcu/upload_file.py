@@ -17,7 +17,7 @@ upload_file = open(sys.argv[2],'r')
 
 lines = upload_file.readlines()
 for line in lines:
-    #print "writing to esp : %s " %  line
+    print "writing to esp : %s " %  line
     ser.write(chr(10))
     ser.write(line + chr(10))
 
