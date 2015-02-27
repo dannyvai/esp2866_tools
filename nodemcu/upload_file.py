@@ -1,6 +1,7 @@
 import serial
 import sys
 import os
+import time
 
 if len(sys.argv) < 3:
     print "Usage: %s device filename" % sys.argv[0]
@@ -11,7 +12,7 @@ if os.path.exists(sys.argv[2]) is False:
     exit(1)
 
 ser = serial.Serial(sys.argv[1],baudrate=9600)
-ser.timeout = 0.1
+ser.timeout = 0.5
 upload_file = open(sys.argv[2],'r')
 
 
@@ -26,11 +27,15 @@ for line in lines:
         res = ser.read(1024)
     
     print "got from esp : %s " % res
+	
+upload_file.close()
 
 ser.timeout = 1
-res = ""
-while len(res) > 0:
+content_timeout = 10 #sec
+start_new_contnet_time = time.time()
+while True and (time.time()-start_new_contnet_time) < content_timeout:
     res = ser.read(1024)
-print "got from esp : %s " % res
+    if res and len(res) > 0:
+		print res
 
-upload_file.close()
+
