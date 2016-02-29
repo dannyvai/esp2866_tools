@@ -75,7 +75,7 @@ else:
 # Compile file if it is lua but not init.lua
 if filename.endswith(".lua") and filename is not "init.lua":
     print "Compiling " + filename
-    lines = ['node.compile(%s)' % filename]
+    ]
     write_lines(ser, lines).split('\n')
     print "Done."
 else:
