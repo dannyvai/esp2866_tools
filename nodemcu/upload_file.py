@@ -71,3 +71,12 @@ if res:
     print "\nCompleted successfully:", res[1]
 else:
     print "The file %s is not written." % filename
+
+# Compile file if it is lua but not init.lua
+if filename.endswith(".lua") and filename is not "init.lua":
+    print "Compiling " + filename
+    lines = ['node.compile(%s)' % filename]
+    write_lines(ser, lines).split('\n')
+    print "Done."
+else:
+    print "No compilation required."
